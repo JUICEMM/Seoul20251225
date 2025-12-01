@@ -112,8 +112,9 @@ const itineraryData = [
         events: [
             { time: "10:00", title: "歷史文化巡禮", icon: "fa-landmark", desc: "景福宮(守門將換崗)、北村韓屋村", nav: "Gyeongbokgung Palace" },
             { time: "13:00", title: "午餐：土俗村蔘雞湯", icon: "fa-spoon", tags: ["經典"], desc: "排隊名店<br><span class='highlight'>每人點一份蔘雞湯，附贈人蔘酒可倒入湯中提味</span>", nav: "Tosokchon Samgyetang" },
+            { time: "14:00", title: "益善洞韓屋村", icon: "fa-mug-hot", tags: ["文青","咖啡"], desc: "韓屋改造咖啡館、文創小店，氛圍悠閒<br>適合午餐後散步＋喝咖啡休息", nav: "Ikseon-dong Hanok Village" },
             { time: "14:30", title: "東大門 SPAREX 汗蒸幕", icon: "fa-spa", tags: ["放鬆"], 
-              desc: "24小時傳統韓式汗蒸幕，含多種桑拿、冰室、鹽室、休息區、美食廣場<br>大人小孩都適合放鬆、洗澡、睡午覺<br><span class='highlight'>地點：東大門早安城百貨 B3</span><br>24個月以下免費，兒童需大人陪同<br><a href='https://www.kkday.com/zh-tw/product/251827-dongdaemun-sparex-jjimjilbang-sauna-ticket-seoul' target='_blank' style='color:#4285F4; text-decoration:underline;'>KKday 線上購票（也可現場買）</a>", 
+              desc: "24小時傳統韓式汗蒸幕，含多種桑拿、冰室、休息區、美食廣場<br>大人小孩都適合放鬆、洗澡、睡午覺<br><span class='highlight'>地點：東大門早安城百貨 B3</span><br>24個月以下免費，兒童需大人陪同<br><a href='https://www.kkday.com/zh-tw/product/251827-dongdaemun-sparex-jjimjilbang-sauna-ticket-seoul' target='_blank' style='color:#4285F4; text-decoration:underline;'>KKday 線上購票（也可現場買）</a>", 
               nav: "SPAREX 동대문" },
             { time: "19:00", title: "晚餐：山清炭火花園", icon: "fa-fire-flame-curved", tags: ["必吃","排隊"], 
               desc: "黑豬肉烤肉名店<br><span class='highlight'>必點：厚切五花肉＋大醬湯</span>", nav: "Sancheong Charcoal Garden Euljiro" }
@@ -140,14 +141,12 @@ function renderItinerary() {
     viewDiv.className = 'section active';
 
     itineraryData.forEach((dayData, index) => {
-        // Tab
         const tab = document.createElement('button');
         tab.className = `tab-btn ${index===0?'active':''}`;
         tab.textContent = dayData.day;
         tab.onclick = () => switchTab(index);
         tabsContainer.appendChild(tab);
 
-        // 每日內容
         const dayDiv = document.createElement('div');
         dayDiv.className = 'day-content';
         dayDiv.id = `day-${index}`;
@@ -167,7 +166,7 @@ function renderItinerary() {
                 event.tags.forEach(t => {
                     let cls = 'food';
                     if (t==="放鬆") cls = 'relax';
-                    if (["打卡","文青","伴手禮"].includes(t)) cls = 'shop';
+                    if (["打卡","文青","咖啡","伴手禮"].includes(t)) cls = 'shop';
                     tagsHTML += `<span class="tag ${cls}">${t}</span>`;
                 });
             }
@@ -204,17 +203,39 @@ function switchView(v, el) {
     document.getElementById('dayTabs').style.display = v==='itinerary'?'flex':'none';
 }
 
-// 資訊頁
+// 資訊頁（已加回航班查詢 + 行李轉盤）
 function renderInfoView() {
     const div = document.createElement('div');
     div.id = 'view-info';
     div.className = 'section';
     div.innerHTML = `
-        <h2 style="font-size:1.2rem;margin-bottom:15px;">航班資訊</h2>
+        <h2 style="font-size:1.2rem;margin-bottom:15px;">航班即時查詢</h2>
+        <div class="info-grid">
+            <div class="info-box">
+                <div class="info-label">去程 CI260 (12/25)</div>
+                <a href="https://www.china-airlines.com/tw/zh/fly/flight-status/flight-info/CI260" target="_blank" class="btn-nav"><i class="fa-solid fa-plane"></i> 查詢去程航班</a>
+            </div>
+            <div class="info-box">
+                <div class="info-label">回程 CI261 (12/28)</div>
+                <a href="https://www.china-airlines.com/tw/zh/fly/flight-status/flight-info/CI261" target="_blank" class="btn-nav"><i class="fa-solid fa-plane-up"></i> 查詢回程航班</a>
+            </div>
+        </div>
+
+        <h2 style="font-size:1.2rem;margin:25px 0 15px;">金浦機場行李轉盤查詢</h2>
+        <div class="info-grid">
+            <div class="info-box">
+                <a href="https://www.airport.co.kr/gimpo/contents.do?lang=ko&cid=200000000000" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">
+                    <i class="fa-solid fa-suitcase-rolling"></i> 金浦機場行李轉盤即時查詢
+                </a>
+            </div>
+        </div>
+
+        <h2 style="font-size:1.2rem;margin:25px 0 15px;">航班資訊</h2>
         <div class="info-grid">
             <div class="info-box"><div class="info-label">去程 (華航 CI0260)</div><div class="info-value">12/25 09:20 TSA → 12:45 GMP</div></div>
             <div class="info-box"><div class="info-label">回程 (華航 CI0261)</div><div class="info-value">12/28 13:45 GMP → 15:30 TSA</div></div>
         </div>
+
         <h2 style="font-size:1.2rem;margin:25px 0 15px;">住宿資訊</h2>
         <div class="info-grid">
             <div class="info-box">
@@ -228,6 +249,7 @@ function renderInfoView() {
                 <a href="https://www.google.com/maps/search/?api=1&query=45-4+Jangchungdan-ro+8-gil,+Jung-gu,+Seoul" target="_blank" class="btn-nav">導航民宿</a>
             </div>
         </div>
+
         <h2 style="font-size:1.2rem;margin:25px 0 15px;">我的收藏</h2>
         <div class="info-box">
             <a href="https://reurl.cc/5bMNjM" target="_blank" style="text-decoration:none;color:var(--primary);font-weight:bold;">
@@ -238,7 +260,7 @@ function renderInfoView() {
     document.getElementById('content-container').appendChild(div);
 }
 
-// 記帳頁
+// 記帳功能（保持不變）
 function renderExpenseView() {
     const div = document.createElement('div');
     div.id = 'view-expense';
