@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>首爾之旅 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f4f4f7;
+            --card-bg: #ffffff;
+            --primary: #5b6c7d;
+            --accent: #c4a484;
+            --text-main: #333333;
+            --text-sub: #888888;
+            --tag-food: #e8f5e9;
+            --tag-food-text: #2e7d32;
+            --tag-shop: #fff3e0;
+            --tag-shop-text: #ef6c00;
+            --tag-other: #e3f2fd;
+            --tag-other-text: #1565c0;
+            --shadow: 0 2px 12px rgba(0,0,0,0.04);
+            --radius: 16px;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 80px;
+        }
+        header {
+            background: var(--card-bg);
+            padding: 20px 20px 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.02);
+        }
+        h1 { margin: 0; font-size: 1.4rem; font-weight: 700; letter-spacing: 1px; }
+        .subtitle { font-size: 0.85rem; color: var(--text-sub); margin-top: 5px; }
+        .tabs {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 10px 0;
+            scrollbar-width: none;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #eee;
+            background: var(--card-bg);
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(91, 108, 125, 0.3);
+        }
+        .section { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        .section.active { display: block; }
+        .weather-widget {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+            color: white;
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 20px;
+            border-left: 2px solid #ddd;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+        .time-label { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 15px;
+            box-shadow: var(--shadow);
+            margin-top: 5px;
+        }
+        .card-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .card-desc { font-size: 0.9rem; line-height: 1.6; color: var(--text-sub); margin-bottom: 10px; }
+        .tag { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 500; margin-right: 5px; margin-bottom: 5px;}
+        .tag.food { background: var(--tag-food); color: var(--tag-food-text); }
+        .tag.shop { background: var(--tag-shop); color: var(--tag-shop-text); }
+        .tag.other { background: var(--tag-other); color: var(--tag-other-text); }
+        .highlight { color: var(--accent); font-weight: 600; border-bottom: 1px dashed var(--accent); }
+        .btn-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0f2f5;
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        .btn-nav i { color: #4285F4; }
+        .info-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .info-box { background: white; padding: 15px; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .info-label { font-size: 0.8rem; color: var(--text-sub); margin-bottom: 4px; }
+        .info-value { font-size: 1rem; font-weight: 500; }
+        .expense-input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; border-radius: 8px; }
+        .btn-primary { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; }
+        .expense-list { margin-top: 20px; list-style: none; padding: 0; }
+        .expense-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
+        .total-block { margin-top:20px; border-top:1px solid #eee; padding-top:15px; background: #f8f9fa; padding: 15px; border-radius: 12px; }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            border-top: 1px solid #f0f0f0;
+            z-index: 200;
+        }
+        .nav-item {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 1.2rem; display: block; margin-bottom: 4px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Seoul Trip 2025</h1>
+    <div class="subtitle">12月25日 - 12月28日 (4天3夜)</div>
+    <div class="tabs" id="dayTabs"></div>
+</header>
+<div id="content-container">
+    <!-- JS 會在這裡插入三個 view -->
+</div>
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="switchView('itinerary', this)">
+        <i class="fa-solid fa-map-location-dot"></i> 行程
+    </div>
+    <div class="nav-item" onclick="switchView('info', this)">
+        <i class="fa-solid fa-suitcase"></i> 資訊
+    </div>
+    <div class="nav-item" onclick="switchView('expense', this)">
+        <i class="fa-solid fa-wallet"></i> 記帳
+    </div>
+</nav>
+<script>
+    const itineraryData = [ /* 你原本的資料完全不變 */
+        { day: "Day 1", date: "12/25 (四)", weather: "晴時多雲 -2°C / 5°C", events: [ { time: "09:20", title: "航班 CI260 出發", icon: "fa-plane-departure", desc: "TSA 松山 -> GMP 金浦<br><a href='https://share.google/tgKkvOXud8Y5OMM1q' target='_blank' style='color:#4285F4;font-size:0.9rem;'>即時查詢航班狀態</a>", nav: "" }, { time: "13:00", title: "抵達 & 飯店 Check-in", icon: "fa-hotel", desc: "首爾金浦機場 => 明洞中城飯店 / 東大門民宿 (by 地鐵)。", nav: "Hotel Midcity Myeongdong" }, { time: "14:00", title: "明洞換錢 & 會合", icon: "fa-money-bill-wave", desc: "麥克 4 人先到明洞換錢，之後搭地鐵到<span class='highlight'>東大門歷史文化公園站</span>跟敬仁 4 人會合。", nav: "Myeongdong Money Exchange" }, { time: "15:00", title: "東大門晚午餐", icon: "fa-utensils", tags: ["必吃"], desc: "1. 鬼怪烤肉 (서울 중구 을지로 43 길 38)<br>2. 滿足五香豬腳 (1~3F, 15:00開始營業)。", nav: "Manjok Ohyang Jokbal City Hall" }, { time: "16:30", title: "江南巡禮", icon: "fa-bag-shopping", tags: ["打卡"], desc: "星空圖書館 / COEX MALL / 樂天購物中心 / 樂天水族館。", nav: "Starfield Library" }, { time: "19:30", title: "晚餐：夢村炒辣雞", icon: "fa-fire-burner", tags: ["必吃"], desc: "夢村炒辣雞 (몽촌닭갈비)。<br><span class='highlight'>地址：서울 송파구 석촌호수로 298</span><br>營業時間：11:30-21:00 (Break 15:00-17:30)", nav: "Mongchon Dakgalbi Songpa" } ] },
+        { day: "Day 2", date: "12/26 (五)", weather: "多雲 -4°C / 3°C", note: "包車服務 10:30~19:30 (Henry)", events: [ { time: "10:30", title: "包車接送 & 早午餐", icon: "fa-van-shuttle", desc: "Henry 到東大門民宿接敬仁 4 人，再到明洞飯店接麥克 4 人。<br>前往<span class='highlight'>望遠市場</span>吃早午餐。", nav: "Mangwon Market" }, { time: "11:30", title: "望遠市場美食", icon: "fa-utensils", tags: ["必吃", "小吃"], desc: "必試：<span class='highlight'>雨耳樂 (Uirak) 炸辣椒</span>、可樂餅、刀削麵。", nav: "Uirak Mangwon" }, { time: "13:30", title: "前往醫院", icon: "fa-hospital", desc: "送敬仁 2 人前往醫院 (Korea Cancer Center Hospital)。", nav: "Korea Cancer Center Hospital" }, { time: "14:00", title: "逛街 & ZOOLUNG ZOOLUNG", icon: "fa-otter", desc: "昌信洞文具/玩具街 (家長天堂)，接著去時代廣場 ZOOLUNG 動物園。", nav: "Zoolung Zoolung Yeongdeungpo" }, { time: "19:30", title: "晚餐：櫸樹雪濃湯", icon: "fa-bowl-food", tags: ["暖胃"], desc: " 느티나무설렁탕。濃郁牛骨湯，<span class='highlight'>搭配蘿蔔泡菜是絕配</span>。", nav: "Neutinamu Seolleongtang" } ] },
+        { day: "Day 3", date: "12/27 (六)", weather: "晴天 -3°C / 4°C", note: "包車服務 10:00~19:00 (Henry)", events: [ { time: "10:00", title: "歷史文化巡禮
