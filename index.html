@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>首爾之旅 2025 - 全團即時共享版</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {--bg:#f9f9f9;--card:#fff;--primary:#3465d9;--text:#333;--sub:#666;--radius:12px;--shadow:0 4px 20px rgba(0,0,0,0.08);}
+        body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);margin:0;padding:20px 0;}
+        .container{max-width:960px;margin:0 auto;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+        header{padding:40px;text-align:center;background:linear-gradient(135deg,#a8c0ff,#3f2b96);color:white;}
+        h1{font-size:2.4rem;margin:0;}
+        .subtitle{font-size:1.1rem;margin-top:10px;opacity:0.9;}
+        .section{padding:30px;border-bottom:1px solid #eee;}
+        .section:last-child{border:none;}
+        h2{font-size:1.8rem;margin-bottom:20px;color:var(--primary);border-bottom:2px solid var(--primary);padding-bottom:10px;}
+        .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:25px;}
+        .card{background:white;padding:25px;border-radius:var(--radius);box-shadow:var(--shadow);}
+        .embed-frame{width:100%;height:600px;border:none;border-radius:var(--radius);box-shadow:var(--shadow);}
+        .note{padding:20px;background:#f0f8ff;border-left:5px solid var(--primary);margin:20px 0;border-radius:0 var(--radius) var(--radius) 0;font-size:1rem;}
+        .btn{display:inline-block;background:var(--primary);color:white;padding:14px 24px;border-radius:8px;text-decoration:none;margin:8px 12px 8px 0;font-size:1rem;}
+        .btn-naver{background:#03c75a;}
+        .btn-whatsapp{background:#25D366;}
+        .checklist{list-style:none;padding:0;margin:20px 0;}
+        .checklist li{margin:12px 0;padding-left:35px;position:relative;font-size:1.1rem;}
+        .checklist li::before{content:"⬜";position:absolute;left:0;font-size:1.4rem;}
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Seoul Trip 2025</h1>
+        <div class="subtitle">12月25日 - 12月28日 (4天3夜)｜全團即時共享版</div>
+    </header>
+
+    <!-- 團員即時位置分享 -->
+    <div class="section">
+        <h2>團員即時位置分享（走散神器）</h2>
+        <div class="card">
+            <p><strong>最簡單方式（推薦全團使用）</strong>：</p>
+            <div class="note">
+                <strong>1. WhatsApp 團體即時位置分享</strong><br>
+                開啟我們團體聊天室 → 點「附加」→「位置」→「分享即時位置」→ 選擇「直到我關閉」或「8小時」<br>
+                全團都能看到彼此在首爾哪條街，超準！
+                <br><br>
+                <strong>2. Glympse（免註冊、臨時分享）</strong><br>
+                <a href="https://glympse.com/groups/create" target="_blank" class="btn">點我建立臨時位置共享群組（有效4天）</a>
+                <br>建立後把連結傳給大家，每個人點進去開啟位置即可。
+            </div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50614.859078886!2d126.9748048!3d37.565017!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca2c31d8d7a6d%3A0x8f0e51e2b1a2a6f3!2sSeoul!5e0!3m2!1sen!2skr!4v1734540000000" class="embed-frame" loading="lazy"></iframe>
+            <p style="text-align:center;margin-top:15px;">↑ 首爾全區地圖（可放大看詳細街道）</p>
+        </div>
+    </div>
+
+    <!-- 照片上傳區 -->
+    <div class="section">
+        <h2>全團照片共享區（即拍即看）</h2>
+        <div class="card">
+            <p><strong>最即時方式（推薦）</strong>：</p>
+            <div class="note">
+                <strong>1. Telegram 團體共享相簿</strong><br>
+                開啟我們團體 → 直接拍照上傳 → 自動建立「共享相簿」<br>
+                全團即時看到最新照片，無延遲！<br><br>
+                <strong>2. Google Photos 共享相簿</strong><br>
+                <a href="https://photos.google.com/share" target="_blank" class="btn">點我建立共享相簿（邀請全團加入）</a><br>
+                建立後傳連結給大家，上傳照片會自動同步。
+            </div>
+            <!-- 範例嵌入（實際使用時換成你們的相簿連結） -->
+            <div style="background:#eee;text-align:center;padding:100px;border-radius:var(--radius);">
+                <p style="font-size:1.2rem;color:#777;">↑ 這裡會顯示你們的共享相簿<br>（上傳後照片即時出現）</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 航班即時狀態 -->
+    <div class="section">
+        <h2>航班即時狀態（自動更新）</h2>
+        <div class="grid">
+            <div class="card">
+                <strong>去程 CI260（12/25 TSA → GMP）</strong>
+                <iframe src="https://www.flightradar24.com/data/flights/ci260" class="embed-frame" loading="lazy"></iframe>
+            </div>
+            <div class="card">
+                <strong>回程 CI261（12/28 GMP → TSA）</strong>
+                <iframe src="https://www.flightradar24.com/data/flights/ci261" class="embed-frame" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 行李轉盤 -->
+    <div class="section">
+        <h2>行李轉盤即時查詢</h2>
+        <div class="grid">
+            <div class="card">
+                <strong>首爾金浦機場 GMP（去程落地）</strong>
+                <iframe src="https://www.airport.co.kr/gimpo/extra/arrival/arrivalList.do?langType=2" class="embed-frame" style="height:500px;" loading="lazy"></iframe>
+            </div>
+            <div class="card">
+                <strong>台北松山機場 TSA（回程落地）</strong>
+                <iframe src="https://www.tsa.gov.tw/flights/international/today?culture=2" class="embed-frame" style="height:500px;" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 天氣 -->
+    <div class="section">
+        <h2>首爾即時天氣（12/25-28）</h2>
+        <div class="card">
+            <iframe src="https://www.accuweather.com/en/kr/seoul/226081/daily-weather-forecast/226081" class="embed-frame" style="height:500px;" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <!-- 行程總覽 -->
+    <div class="section">
+        <h2>行程總覽</h2>
+        <div class="card">
+            <strong>Day 1 (12/25)</strong>: 09:20 CI260起飛 → 13:00抵達Check-in → 明洞換錢會合 → 東大門午餐 → 江南巡禮 → 夢村炒辣雞晚餐<br><br>
+            <strong>Day 2 (12/26)</strong>: 包車望遠市場早午餐 → 醫院 → 玩具街+ZOOLUNG → 櫸樹雪濃湯晚餐<br><br>
+            <strong>Day 3 (12/27)</strong>: 包車 → 聖水洞+北村 → 土俗村午餐 → 益善洞 → SPAREX汗蒸幕 → 山清烤肉晚餐<br><br>
+            <strong>Day 4 (12/28)</strong>: 南大門早餐 → Check-out → 13:45 CI261返台
+        </div>
+    </div>
+
+    <!-- 打包清單 -->
+    <div class="section">
+        <h2>打包清單（請勾選）</h2>
+        <div class="card">
+            <ul class="checklist">
+                <li>護照 / 機票 / K-ETA</li>
+                <li>厚外套、防風衣、手套、圍巾、毛帽</li>
+                <li>充電器、行動電源、韓國轉接頭（C/F型）</li>
+                <li>現金 / 信用卡 / T-money交通卡</li>
+                <li>常備藥、感冒藥、腸胃藥、暈車藥</li>
+                <li>保暖貼、暖寶寶（首爾12月超冷）</li>
+                <li>汗蒸幕換洗衣物、沐浴用品</li>
+                <li>相機 / 手機備用電池</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 快速導航 -->
+    <div class="section">
+        <h2>快速地圖導航</h2>
+        <div class="card" style="text-align:center;">
+            <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Midcity+Myeongdong" class="btn">明洞飯店 (Google)</a>
+            <a href="https://map.naver.com/v5/search/Hotel%20Midcity%20Myeongdong" class="btn naver-btn">明洞飯店 (Naver)</a><br>
+            <a href="https://www.google.com/maps/search/?api=1&query=SPAREX%20%EB%8F%99%EB%8C%80%EB%AC%B8" class="btn">SPAREX汗蒸幕 (Google)</a>
+            <a href="https://map.naver.com/v5/search/%EB%8F%99%EB%8C%80%EB%AC%B8%20%EC%8A%A4%ED%8C%8C%EB%A0%89%EC%8A%A4" class="btn naver-btn">SPAREX (Naver)</a><br>
+            <a href="https://www.google.com/maps/search/?api=1&query=%EC%82%B0%EC%B2%AD%EC%88%AF%EB%B6%88%EA%B0%80%EB%93%A0" class="btn">山清烤肉 (Google)</a>
+            <a href="https://map.naver.com/v5/search/%EC%82%B0%EC%B2%AD%EC%88%AF%EB%B6%88%EA%B0%80%EB%93%A0" class="btn naver-btn">山清烤肉 (Naver)</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
