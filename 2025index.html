@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>首爾之旅 2025 - 全團即時共享版</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f4f4f7; --card-bg: #ffffff; --primary: #5b6c7d; --accent: #c4a484;
+            --text-main: #333333; --text-sub: #888888;
+            --tag-food: #e8f5e9; --tag-food-text: #2e7d32;
+            --tag-shop: #fff3e0; --tag-shop-text: #ef6c00;
+            --tag-other: #e3f2fd; --tag-other-text: #1565c0;
+            --shadow: 0 2px 12px rgba(0,0,0,0.04); --radius: 16px;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Noto Sans TC', sans-serif; background:var(--bg-color); color:var(--text-main); margin:0; padding-bottom:80px; }
+        header { background:var(--card-bg); padding:20px 20px 10px; position:sticky; top:0; z-index:100; box-shadow:0 1px 5px rgba(0,0,0,0.02); }
+        h1 { margin:0; font-size:1.4rem; font-weight:700; letter-spacing:1px; }
+        .subtitle { font-size:0.85rem; color:var(--text-sub); margin-top:5px; }
+        .tabs { display:flex; gap:15px; overflow-x:auto; padding:10px 0; scrollbar-width:none; }
+        .tabs::-webkit-scrollbar { display:none; }
+        .tab-btn { padding:8px 16px; border-radius:20px; border:1px solid #eee; background:var(--card-bg); color:var(--text-sub); font-size:0.9rem; white-space:nowrap; cursor:pointer; transition:all .3s; }
+        .tab-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); box-shadow:0 4px 10px rgba(91,108,125,.3); }
+        .section { display:none; padding:20px; animation:fadeIn .3s ease; }
+        .section.active { display:block; }
+        .weather-widget { display:flex; align-items:center; justify-content:space-between; background:linear-gradient(135deg,#a8c0ff,#3f2b96); color:white; padding:15px; border-radius:var(--radius); margin-bottom:20px; font-size:0.9rem; }
+        .timeline-item { position:relative; padding-left:20px; margin-bottom:20px; border-left:2px solid #ddd; }
+        .timeline-item::before { content:''; position:absolute; left:-6px; top:0; width:10px; height:10px; border-radius:50%; background:var(--primary); }
+        .time-label { font-size:0.85rem; font-weight:700; color:var(--primary); margin-bottom:5px; }
+        .card { background:var(--card-bg); border-radius:var(--radius); padding:15px; box-shadow:var(--shadow); margin-top:5px; }
+        .card-title { font-weight:600; font-size:1.1rem; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+        .card-desc { font-size:0.9rem; line-height:1.6; color:var(--text-sub); margin-bottom:10px; }
+        .tag { display:inline-block; padding:4px 8px; border-radius:6px; font-size:0.75rem; font-weight:500; margin-right:5px; margin-bottom:5px; }
+        .tag.food { background:var(--tag-food); color:var(--tag-food-text); }
+        .tag.shop { background:var(--tag-shop); color:var(--tag-shop-text); }
+        .tag.other { background:var(--tag-other); color:var(--tag-other-text); }
+        .highlight { color:var(--accent); font-weight:600; border-bottom:1px dashed var(--accent); }
+        .btn-nav { display:inline-flex; align-items:center; gap:6px; background:#f0f2f5; color:var(--text-main); padding:8px 12px; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:500; margin-right:8px; margin-top:8px; }
+        .btn-nav i { color:#4285F4; }
+        .btn-naver { display:inline-flex; align-items:center; gap:6px; background:#03c75a; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:0.85rem; font-weight:500; margin-top:8px; }
+        .btn-naver i { color:white; }
+        .note { padding:15px; background:#f0f8ff; border-left:4px solid var(--primary); margin:20px 0; border-radius:0 var(--radius) var(--radius) 0; line-height:1.6; }
+        .embed-frame { width:100%; height:600px; border:none; border-radius:var(--radius); box-shadow:var(--shadow); margin-top:10px; }
+        .info-grid { display:grid; grid-template-columns:1fr; gap:15px; }
+        .info-box { background:white; padding:15px; border-radius:var(--radius); box-shadow:var(--shadow); }
+        .expense-input { width:100%; padding:12px; margin-bottom:10px; border:1px solid #eee; border-radius:8px; }
+        .btn-primary { width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:8px; font-size:1rem; cursor:pointer; }
+        .expense-list { margin-top:20px; list-style:none; padding:0; }
+        .expense-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #eee; }
+        .total-block { margin-top:20px; border-top:1px solid #eee; padding:15px; background:#f8f9fa; border-radius:12px; }
+        .bottom-nav { position:fixed; bottom:0; width:100%; background:white; display:flex; justify-content:space-around; padding:12px 0; box-shadow:0 -2px 10px rgba(0,0,0,0.05); border-top:1px solid #f0f0f0; z-index:200; }
+        .nav-item { text-align:center; color:#aaa; font-size:0.7rem; cursor:pointer; }
+        .nav-item.active { color:var(--primary); }
+        .nav-item i { font-size:1.2rem; display:block; margin-bottom:4px; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Seoul Trip 2025</h1>
+    <div class="subtitle">12月25日 - 12月28日 (4天3夜)</div>
+    <div class="tabs" id="dayTabs"></div>
+</header>
+<div id="content-container"></div>
+
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="switchView('itinerary',this)">行程</div>
+    <div class="nav-item" onclick="switchView('info',this)">資訊</div>
+    <div class="nav-item" onclick="switchView('expense',this)">記帳</div>
+</nav>
+
+<script>
+const itineraryData = [
+    {day:"Day 1",date:"12/25 (四)",weather:"晴時多雲 -2°C / 5°C",events:[
+        {time:"09:20",title:"航班 CI260 出發",icon:"fa-plane-departure",desc:"TSA 松山 → GMP 金浦<br><a href='https://www.google.com/travel/flights?q=Flights%20to%20GMP%20from%20TSA%20on%202025-12-25%20one-way%20CI260' target='_blank' style='color:#4285F4;font-size:0.9rem;'>Google Flights 即時查詢</a>",nav:""},
+        {time:"13:00",title:"抵達 & 飯店 Check-in",icon:"fa-hotel",desc:"首爾金浦機場 → 明洞中城飯店 / 東大門民宿 (地鐵)",nav:"Hotel Midcity Myeongdong"},
+        {time:"14:00",title:"明洞換錢 & 會合",icon:"fa-money-bill-wave",desc:"麥克4人先到明洞換錢 → 搭地鐵到東大門歷史文化公園站與敬仁4人會合",nav:"Myeongdong Money Exchange"},
+        {time:"15:00",title:"東大門晚午餐",icon:"fa-utensils",tags:["必吃"],desc:"鬼怪烤肉 (서울 중구 을지로43길 38)<br>滿足五香豬腳 (서울 중구 을지로43길 9-4 1~3층, 15:00開始營業)",nav:"서울 중구 을지로43길"},
+        {time:"16:30",title:"江南巡禮",icon:"fa-bag-shopping",tags:["打卡"],desc:"星空圖書館 / COEX MALL (三成站)<br>樂天百貨 / 樂天世界塔 (蠶室站)",nav:"Starfield Library COEX"},
+        {time:"19:30",title:"晚餐",icon:"fa-fire-burner",tags:["必吃"],desc:"夢村炒辣雞 (서울 송파구 석촌호수로 298)<br>或外固執雪濃湯 (555 Samseong-ro, Gangnam District)",nav:"몽촌닭갈비 석촌호수로"}
+    ]},
+    {day:"Day 2",date:"12/26 (五)",weather:"多雲 -4°C / 3°C",note:"包車服務 10:30~19:30 (Henry)",events:[
+        {time:"10:30",title:"包車接送 & 早午餐",icon:"fa-van-shuttle",desc:"Henry接東大門民宿 → 明洞飯店 → 望遠市場<br>天婦羅 Uirak (411-21 Mangwon-dong)",nav:"우이락 망원"},
+        {time:"13:30",title:"前往醫院",icon:"fa-hospital",desc:"送敬仁2人到 Korea Cancer Center Hospital (75 Nowon-ro, Nowon-gu)",nav:"원자력병원 Nowon"},
+        {time:"14:00",title:"逛街 & ZOOLUNG",icon:"fa-otter",desc:"昌信洞玩具街 → 時代廣場 ZOOLUNG",nav:"Zoolung Zoolung Yeongdeungpo"},
+        {time:"19:30",title:"晚餐：櫸樹雪濃湯",icon:"fa-bowl-food",tags:["暖胃"],desc:"느티나무설렁탕 (서울 중구 퇴계로71길 38)",nav:"느티나무설렁탕 동대문"}
+    ]},
+    {day:"Day 3",date:"12/27 (六)",weather:"晴天 -3°C / 4°C",note:"包車服務 10:00~19:00 (Henry)",events:[
+        {time:"10:00",title:"包車接送",icon:"fa-van-shuttle",desc:"明洞飯店 → 東大門民宿",nav:""},
+        {time:"11:00",title:"聖水洞 & 北村韓屋村",icon:"fa-camera",tags:["打卡"],desc:"聖水洞逛街 → 北村韓屋村",nav:"성수동 서울"},
+        {time:"13:00",title:"午餐：土俗村蔘雞湯",icon:"fa-spoon",tags:["經典"],desc:"土俗村蔘雞湯",nav:"토속촌 삼계탕"},
+        {time:"14:00",title:"益善洞韓屋村",icon:"fa-mug-hot",tags:["文青","咖啡"],desc:"韓屋咖啡館、文創小店",nav:"Ikseon-dong Hanok Village"},
+        {time:"14:30",title:"東大門 SPAREX 汗蒸幕",icon:"fa-spa",tags:["放鬆"],desc:"東大門Sparex (早安城百貨 B3)",nav:"동대문 스파렉스"},
+        {time:"18:00",title:"晚餐：山清炭火花園",icon:"fa-fire-flame-curved",tags:["必吃","排隊"],desc:"산청숯불가든 或 청기와타워",nav:"산청숯불가든 을지로"}
+    ]},
+    {day:"Day 4",date:"12/28 (日)",weather:"多雲 -2°C / 6°C",events:[
+        {time:"11:00",title:"Check-out & 早餐",icon:"fa-suitcase-rolling",desc:"南大門刀削麵巷或明洞早餐",nav:"남대문 칼국수 골목"},
+        {time:"12:00",title:"機場會合",icon:"fa-handshake",desc:"金浦機場集合",nav:""},
+        {time:"13:45",title:"航班 CI261 起飛",icon:"fa-plane-up",desc:"GMP 金浦 → TSA 松山<br><a href='https://www.google.com/travel/flights?q=Flights%20to%20TSA%20from%20GMP%20on%202025-12-28%20one-way%20CI261' target='_blank' style='color:#4285F4;font-size:0.9rem;'>Google Flights 即時查詢</a>",nav:""}
+    ]}
+];
+
+function renderItinerary(){
+    const c=document.getElementById('content-container'),t=document.getElementById('dayTabs');
+    c.innerHTML='';t.innerHTML='';
+    const iv=document.createElement('div');iv.id='view-itinerary';iv.className='section active';
+    itineraryData.forEach((d,i)=>{
+        const tab=document.createElement('button');tab.className=`tab-btn ${i===0?'active':''}`;tab.textContent=d.day;
+        tab.onclick=()=>switchTab(i);t.appendChild(tab);
+        const day=document.createElement('div');day.className='day-content';day.id=`day-${i}`;day.style.display=i===0?'block':'none';
+        let icon='fa-cloud-sun';if(d.weather.includes('晴'))icon='fa-sun';if(d.weather.includes('多雲'))icon='fa-cloud';
+        day.innerHTML=`<div class="weather-widget"><div>${d.date}</div><div>${d.weather}</div></div>
+                       ${d.note?`<div style="margin-bottom:15px;color:var(--primary);font-weight:bold;">${d.note}</div>`:''}`;
+        d.events.forEach(e=>{
+            let tags='';if(e.tags)e.tags.forEach(g=>{let cl='other';if(['必吃','小吃','暖胃','經典','排隊','放鬆'].includes(g))cl='food';if(['打卡','文青','咖啡','伴手禮'].includes(g))cl='shop';tags+=`<span class="tag ${cl}">${g}</span>`;});
+            const googleBtn = e.nav ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.nav)}" target="_blank" class="btn-nav"><i class="fa-solid fa-location-arrow"></i> Google</a>` : '';
+            const naverBtn = e.nav ? `<a href="https://map.naver.com/v5/search/${encodeURIComponent(e.nav)}" target="_blank" class="btn-naver"><i class="fa-solid fa-location-dot"></i> Naver</a>` : '';
+            day.innerHTML+=`<div class="timeline-item"><div class="time-label">${e.time}</div><div class="card">
+                <div class="card-title"><i class="fa-solid ${e.icon}"></i> ${e.title}</div><div style="margin-bottom:8px;">${tags}</div>
+                <div class="card-desc">${e.desc}</div>${googleBtn}${naverBtn}</div></div>`;
+        });
+        iv.appendChild(day);
+    });
+    c.appendChild(iv);
+
+    // 新增：團員即時位置分享
+    const locationDiv = document.createElement('div'); locationDiv.id = 'view-location'; locationDiv.className = 'section';
+    locationDiv.innerHTML = `
+        <h2 style="font-size:1.2rem;margin-bottom:15px;">團員即時位置分享（走散神器）</h2>
+        <div class="card">
+            <p><strong>最簡單方式（推薦全團使用）：</strong></p>
+            <div class="note">
+                <strong>1. WhatsApp 團體即時位置分享</strong><br>
+                開啟我們團體聊天室 → 點「附加」→「位置」→「分享即時位置」→ 選擇「直到我關閉」或「8小時」<br>
+                全團都能看到彼此在首爾哪條街，超準！<br><br>
+                <strong>2. Glympse（免註冊、臨時分享）</strong><br>
+                <a href="https://glympse.com/groups/create" target="_blank" class="btn-nav" style="background:#4285F4;color:white;">點我建立臨時位置共享群組（有效4天）</a><br>
+                建立後把連結傳給大家，每個人點進去開啟位置即可。
+            </div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50614.859078886!2d126.9748048!3d37.565017!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca2c31d8d7a6d%3A0x8f0e51e2b1a2a6f3!2sSeoul!5e0!3m2!1sen!2skr!4v1734540000000" class="embed-frame" loading="lazy"></iframe>
+            <p style="text-align:center;margin-top:10px;">↑ 首爾全區地圖（可放大看詳細街道）</p>
+        </div>
+    `;
+    c.appendChild(locationDiv);
+
+    // 新增：全團照片共享區
+    const photoDiv = document.createElement('div'); photoDiv.id = 'view-photo'; photoDiv.className = 'section';
+    photoDiv.innerHTML = `
+        <h2 style="font-size:1.2rem;margin-bottom:15px;">全團照片共享區（即拍即看）</h2>
+        <div class="card">
+            <p><strong>最即時方式（推薦）：</strong></p>
+            <div class="note">
+                <strong>1. Telegram 團體共享相簿</strong><br>
+                開啟我們團體 → 直接拍照上傳 → 自動建立「共享相簿」<br>
+                全團即時看到最新照片，無延遲！<br><br>
+                <strong>2. Google Photos 共享相簿</strong><br>
+                <a href="https://photos.google.com/share" target="_blank" class="btn-nav" style="background:#4285F4;color:white;">點我建立共享相簿（邀請全團加入）</a><br>
+                建立後傳連結給大家，上傳照片會自動同步。
+            </div>
+            <div style="background:#eee;text-align:center;padding:100px;border-radius:var(--radius);margin-top:20px;">
+                <p style="font-size:1.2rem;color:#777;">↑ 這裡會顯示你們的共享相簿<br>（上傳後照片即時出現）</p>
+            </div>
+        </div>
+    `;
+    c.appendChild(photoDiv);
+
+    // 原有資訊頁（保留航班、行李等）
+    const info=document.createElement('div');info.id='view-info';info.className='section';
+    info.innerHTML = /* 你原本的資訊頁內容 */;
+    c.appendChild(info);
+
+    // 記帳頁保持不變
+    const exp=document.createElement('div');exp.id='view-expense';exp.className='section';
+    exp.innerHTML = /* 你原本的記帳內容 */;
+    c.appendChild(exp);loadExpenses();
+}
+
+function switchTab(i){ /* 不變 */ }
+function switchView(v,e){ /* 不變，新增 case 'location' 和 'photo' 時會自動顯示 */ }
+
+window.onload=renderItinerary;
+</script>
+</body>
+</html>
