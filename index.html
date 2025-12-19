@@ -35,6 +35,7 @@
         .card { background:var(--card-bg); border-radius:var(--radius); padding:15px; box-shadow:var(--shadow); margin-top:5px; }
         .card-title { font-weight:600; font-size:1.1rem; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
         .card-desc { font-size:0.9rem; line-height:1.6; color:var(--text-sub); margin-bottom:10px; }
+        .card-desc a { color: #4285F4; text-decoration: none; }
         .tag { display:inline-block; padding:4px 8px; border-radius:6px; font-size:0.75rem; font-weight:500; margin-right:5px; margin-bottom:5px; }
         .tag.food { background:var(--tag-food); color:var(--tag-food-text); }
         .tag.shop { background:var(--tag-shop); color:var(--tag-shop-text); }
@@ -91,7 +92,7 @@
 const itineraryData = [
     {day:"Day 1",date:"12/25 (四)",weather:"晴時多雲 -2°C / 5°C",events:[
         {time:"07:20",title:"建議集合時間",icon:"fa-clock",desc:"<strong class='highlight'>松山機場國際線報到櫃檯集合</strong><br>（起飛前2小時報到，建議提早到達辦理）",nav:""},
-        {time:"09:20",title:"航班 CI260 出發",icon:"fa-plane-departure",desc:"TSA 松山 → GMP 金浦 (飛行約2小時25分)<br><a href='https://www.google.com/travel/flights?q=Flights%20to%20GMP%20from%20TSA%20on%202025-12-25%20one-way%20CI260' target='_blank' style='color:#4285F4;font-size:0.9rem;'>Google Flights 即時查詢</a>",nav:""},
+        {time:"09:20",title:"航班 CI260 出發",icon:"fa-plane-departure",desc:"TSA 松山 → GMP 金浦 (飛行約2小時25分)<br><a href='https://www.google.com/travel/flights' target='_blank'>Google Flights 即時查詢</a>",nav:""},
         {time:"13:00",title:"抵達 & 飯店 Check-in",icon:"fa-hotel",desc:"首爾金浦機場 → 明洞中城飯店 / 東大門民宿 (地鐵)",nav:"Hotel Midcity Myeongdong"},
         {time:"14:00",title:"明洞換錢 & 會合",icon:"fa-money-bill-wave",desc:"麥克4人先到明洞換錢 → 搭地鐵到東大門歷史文化公園站與敬仁4人會合",nav:"Myeongdong Money Exchange"},
         {time:"15:00",title:"東大門晚午餐",icon:"fa-utensils",tags:["必吃"],desc:"鬼怪烤肉 (서울 중구 을지로43길 38)<br>滿足五香豬腳 (서울 중구 을지로43길 9-4 1~3층, 15:00開始營業)<br><span class='souvenir'>伴手禮建議：東大門批發市場小物、服飾配件</span>",nav:"서울 중구 을지로43길"},
@@ -114,7 +115,7 @@ const itineraryData = [
     {day:"Day 4",date:"12/28 (日)",weather:"多雲 -2°C / 6°C",events:[
         {time:"11:00",title:"Check-out & 早餐",icon:"fa-suitcase-rolling",desc:"明洞或南大門市場刀削麵巷早餐<br><span class='souvenir'>伴手禮建議：南大門魷魚絲、果乾、傳統零食</span>",nav:"남대문 칼국수 골목"},
         {time:"11:45",title:"機場會合",icon:"fa-handshake",desc:"<strong class='highlight'>金浦機場國際線報到櫃檯集合</strong><br>（起飛前2小時報到，建議11:45到達辦理）",nav:"Gimpo International Airport"},
-        {time:"13:45",title:"航班 CI261 起飛",icon:"fa-plane-up",desc:"GMP 金浦 → TSA 松山 (預計15:30抵達)<br><a href='https://www.google.com/travel/flights?q=Flights%20to%20TSA%20from%20GMP%20on%202025-12-28%20one-way%20CI261' target='_blank' style='color:#4285F4;font-size:0.9rem;'>Google Flights 即時查詢</a>",nav:""}
+        {time:"13:45",title:"航班 CI261 起飛",icon:"fa-plane-up",desc:"GMP 金浦 → TSA 松山 (預計15:30抵達)<br><a href='https://www.google.com/travel/flights' target='_blank'>Google Flights 即時查詢</a>",nav:""}
     ]}
 ];
 
@@ -126,16 +127,26 @@ function renderItinerary(){
         const tab=document.createElement('button');tab.className=`tab-btn ${i===0?'active':''}`;tab.textContent=d.day;
         tab.onclick=()=>switchTab(i);t.appendChild(tab);
         const day=document.createElement('div');day.className='day-content';day.id=`day-${i}`;day.style.display=i===0?'block':'none';
+        
         let icon='fa-cloud-sun';if(d.weather.includes('晴'))icon='fa-sun';if(d.weather.includes('多雲'))icon='fa-cloud';
-        day.innerHTML=`<div class="weather-widget"><div>${d.date}</div><div>${d.weather}</div></div>
-                       ${d.note?`<div style="margin-bottom:15px;color:var(--primary);font-weight:bold;">${d.note}</div>`:''}`;
+        
+        // 修正重點：使用反引號 (`) 並加上 $ 符號
+        day.innerHTML=`<div class="weather-widget"><div>${d.date}</div><div><i class="fa-solid ${icon}"></i> ${d.weather}</div></div>
+                       ${d.note?`<div style="margin-bottom:15px;color:var(--primary);font-weight:bold;"><i class="fa-solid fa-circle-exclamation"></i> ${d.note}</div>`:''}`;
+        
         d.events.forEach(e=>{
             let tags='';if(e.tags)e.tags.forEach(g=>{let cl='other';if(['必吃','小吃','暖胃','經典','排隊','放鬆'].includes(g))cl='food';if(['打卡','文青','咖啡','伴手禮'].includes(g))cl='shop';tags+=`<span class="tag ${cl}">${g}</span>`;});
+            
+            // 修正重點：加上反引號 (`) 並修正 URL 格式與變數引用
             const googleBtn = e.nav ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.nav)}" target="_blank" class="btn-nav"><i class="fa-solid fa-location-arrow"></i> Google</a>` : '';
             const naverBtn = e.nav ? `<a href="https://map.naver.com/v5/search/${encodeURIComponent(e.nav)}" target="_blank" class="btn-naver"><i class="fa-solid fa-location-dot"></i> Naver</a>` : '';
+            
+            // 修正重點：加上反引號 (`) 
             day.innerHTML+=`<div class="timeline-item"><div class="time-label">${e.time}</div><div class="card">
                 <div class="card-title"><i class="fa-solid ${e.icon}"></i> ${e.title}</div><div style="margin-bottom:8px;">${tags}</div>
-                <div class="card-desc">${e.desc}</div>${googleBtn}${naverBtn}</div></div>`;
+                <div class="card-desc">${e.desc}</div>
+                <div style="margin-top:10px;">${googleBtn}${naverBtn}</div>
+                </div></div>`;
         });
         iv.appendChild(day);
     });
@@ -149,11 +160,11 @@ function renderItinerary(){
         <div class="info-grid">
             <div class="info-box">
                 <div class="info-label">去程 CI260（12/25）</div>
-                <a href="https://www.google.com/travel/flights?q=Flights%20to%20GMP%20from%20TSA%20on%202025-12-25%20one-way%20CI260" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">Google Flights 去程</a>
+                <a href="https://www.google.com/travel/flights" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">Google Flights 去程</a>
             </div>
             <div class="info-box">
                 <div class="info-label">回程 CI261（12/28）</div>
-                <a href="https://www.google.com/travel/flights?q=Flights%20to%20TSA%20from%20GMP%20on%202025-12-28%20one-way%20CI261" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">Google Flights 回程</a>
+                <a href="https://www.google.com/travel/flights" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">Google Flights 回程</a>
             </div>
         </div>
 
@@ -187,7 +198,7 @@ function renderItinerary(){
                 <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Midcity+Myeongdong" target="_blank" class="btn-nav">Google</a>
                 <a href="https://map.naver.com/v5/search/Hotel%20Midcity%20Myeongdong" target="_blank" class="btn-naver">Naver</a></div>
             <div class="info-box"><div class="info-label">Airbnb (東大門民宿)</div><div class="info-value" style="font-size:0.9rem">45-4 Jangchungdan-ro 8-gil</div>
-                <a href="https://www.google.com/maps/search/?api=1&query=45-4+Jangchungdan-ro+8-gil,+Jung-gu,+Seoul" target="_blank" class="btn-nav">Google</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=45-4+Jangchungdan-ro+8-gil" target="_blank" class="btn-nav">Google</a>
                 <a href="https://map.naver.com/v5/search/45-4%20Jangchungdan-ro%208-gil" target="_blank" class="btn-naver">Naver</a></div>
         </div>
 
