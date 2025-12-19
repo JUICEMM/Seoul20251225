@@ -64,7 +64,9 @@
         .luggage-list li { margin:10px 0; padding-left:30px; position:relative; font-size:1rem; }
         .luggage-list li input { position:absolute; left:0; top:4px; transform:scale(1.5); }
         .luggage-list li label { cursor:pointer; }
-        .line-qr { width:250px; height:250px; margin:20px auto; display:block; border-radius:var(--radius); box-shadow:var(--shadow); }
+        
+        .btn-google-drive { display:inline-flex; align-items:center; gap:8px; background:#1FA463; color:white; padding:12px 20px; border-radius:50px; text-decoration:none; font-weight:bold; margin-top:15px; box-shadow: 0 4px 10px rgba(31, 164, 99, 0.3); }
+
         @keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
     </style>
 </head>
@@ -89,6 +91,10 @@
 </nav>
 
 <script>
+// ========= 您的 Google Drive 連結 =========
+const ALBUM_LINK = "https://drive.google.com/drive/folders/1xdc5mTKFMI1tez06zt_IzPR9HNLg9oCv?usp=sharing"; 
+// ==========================================
+
 const itineraryData = [
     {day:"Day 1",date:"12/25 (四)",weather:"晴時多雲 -2°C / 5°C",events:[
         {time:"07:20",title:"建議集合時間",icon:"fa-clock",desc:"<strong class='highlight'>松山機場國際線報到櫃檯集合</strong><br>（起飛前2小時報到，建議提早到達辦理）",nav:""},
@@ -130,18 +136,15 @@ function renderItinerary(){
         
         let icon='fa-cloud-sun';if(d.weather.includes('晴'))icon='fa-sun';if(d.weather.includes('多雲'))icon='fa-cloud';
         
-        // 修正重點：使用反引號 (`) 並加上 $ 符號
         day.innerHTML=`<div class="weather-widget"><div>${d.date}</div><div><i class="fa-solid ${icon}"></i> ${d.weather}</div></div>
                        ${d.note?`<div style="margin-bottom:15px;color:var(--primary);font-weight:bold;"><i class="fa-solid fa-circle-exclamation"></i> ${d.note}</div>`:''}`;
         
         d.events.forEach(e=>{
             let tags='';if(e.tags)e.tags.forEach(g=>{let cl='other';if(['必吃','小吃','暖胃','經典','排隊','放鬆'].includes(g))cl='food';if(['打卡','文青','咖啡','伴手禮'].includes(g))cl='shop';tags+=`<span class="tag ${cl}">${g}</span>`;});
             
-            // 修正重點：加上反引號 (`) 並修正 URL 格式與變數引用
             const googleBtn = e.nav ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.nav)}" target="_blank" class="btn-nav"><i class="fa-solid fa-location-arrow"></i> Google</a>` : '';
             const naverBtn = e.nav ? `<a href="https://map.naver.com/v5/search/${encodeURIComponent(e.nav)}" target="_blank" class="btn-naver"><i class="fa-solid fa-location-dot"></i> Naver</a>` : '';
             
-            // 修正重點：加上反引號 (`) 
             day.innerHTML+=`<div class="timeline-item"><div class="time-label">${e.time}</div><div class="card">
                 <div class="card-title"><i class="fa-solid ${e.icon}"></i> ${e.title}</div><div style="margin-bottom:8px;">${tags}</div>
                 <div class="card-desc">${e.desc}</div>
@@ -156,7 +159,21 @@ function renderItinerary(){
     const info=document.createElement('div');info.id='view-info';info.className='section';
     info.innerHTML=`
         <div class="alert">去程 CI260 (09:20起飛) → 建議 <strong>07:20 松山機場集合</strong>（提前2小時報到）<br>回程 CI261 (13:45起飛) → 建議 <strong>11:45 金浦機場集合</strong>（提前2小時報到）</div>
-        <h2 style="font-size:1.2rem;margin-bottom:15px;">航班即時查詢</h2>
+        
+        <h2 style="font-size:1.2rem;margin:15px 0;">Google Drive 相簿</h2>
+        <div class="info-box" style="text-align:center;">
+            <p style="font-size:0.95rem;line-height:1.6;color:#555;margin-bottom:15px;">
+                照片影片不需壓縮，且不會過期！<br>大家可以上傳，也可以一鍵下載全部。
+            </p>
+            <a href="${ALBUM_LINK}" target="_blank" class="btn-google-drive" style="width:100%;justify-content:center;">
+                <i class="fa-brands fa-google-drive"></i> 打開 Google Drive 相簿
+            </a>
+            <div style="font-size:0.8rem;color:#999;margin-top:15px;">
+                建議使用 Google Drive App 操作最方便
+            </div>
+        </div>
+
+        <h2 style="font-size:1.2rem;margin-bottom:15px;margin-top:25px;">航班即時查詢</h2>
         <div class="info-grid">
             <div class="info-box">
                 <div class="info-label">去程 CI260（12/25）</div>
@@ -168,28 +185,16 @@ function renderItinerary(){
             </div>
         </div>
 
-        <h2 style="font-size:1.2rem;margin:25px 0 15px;">行李轉盤即時查詢</h2>
-        <div class="info-grid">
-            <div class="info-box">
-                <a href="https://www.tsa.gov.tw/" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">台北松山機場行李轉盤</a>
-            </div>
-            <div class="info-box">
-                <a href="https://www.airport.co.kr/gimpo/extra/arrival/arrivalList.do" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">首爾金浦機場行李轉盤</a>
-            </div>
-        </div>
-
-        <h2 style="font-size:1.2rem;margin:25px 0 15px;">韓服租借</h2>
-        <div class="info-grid">
-            <div class="info-box">
-                <a href="https://www.kkday.com/zh-tw/product/133746" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">KKday 韓服租借</a>
-                <a href="https://lilytogo.com/gongju-hanbok/" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">公主韓服</a>
-            </div>
-        </div>
-
-        <h2 style="font-size:1.2rem;margin:25px 0 15px;">航班資訊</h2>
+        <h2 style="font-size:1.2rem;margin:25px 0 15px;">航班與行李</h2>
         <div class="info-grid">
             <div class="info-box"><div class="info-label">去程 CI260</div><div class="info-value">12/25 09:20 TSA → 12:45 GMP</div></div>
             <div class="info-box"><div class="info-label">回程 CI261</div><div class="info-value">12/28 13:45 GMP → 15:30 TSA</div></div>
+            <div class="info-box">
+                <a href="https://www.tsa.gov.tw/" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">松山機場行李轉盤</a>
+            </div>
+            <div class="info-box">
+                <a href="https://www.airport.co.kr/gimpo/extra/arrival/arrivalList.do" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">金浦機場行李轉盤</a>
+            </div>
         </div>
 
         <h2 style="font-size:1.2rem;margin:25px 0 15px;">住宿資訊</h2>
@@ -202,14 +207,7 @@ function renderItinerary(){
                 <a href="https://map.naver.com/v5/search/45-4%20Jangchungdan-ro%208-gil" target="_blank" class="btn-naver">Naver</a></div>
         </div>
 
-        <h2 style="font-size:1.2rem;margin:25px 0 15px;">LINE群組照片上傳</h2>
-        <div class="info-box" style="text-align:center;">
-            <p>掃描QR碼加入群組，即時上傳旅行照片！</p>
-            <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=https%3A%2F%2Fline.me%2Fti%2Fg%2F787z7CTcK4" alt="LINE群組QR碼" class="line-qr">
-            <a href="https://line.me/ti/g/787z7CTcK4" target="_blank" style="display:block;margin-top:15px;color:#00b900;font-weight:bold;">點我加入LINE群組</a>
-        </div>
-
-        <h2 style="font-size:1.2rem;margin:25px 0 15px;">建議行李清單（可勾選）</h2>
+        <h2 style="font-size:1.2rem;margin:25px 0 15px;">建議行李清單</h2>
         <div class="info-box">
             <ul class="luggage-list" id="luggage-list">
                 <li><input type="checkbox" id="lug1"><label for="lug1">護照 / 機票 / K-ETA</label></li>
