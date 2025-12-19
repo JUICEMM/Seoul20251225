@@ -60,11 +60,17 @@
         .nav-item.active { color:var(--primary); }
         .nav-item i { font-size:1.3rem; display:block; margin-bottom:4px; }
         .alert { background:#fff3cd; color:#856404; padding:15px; border-radius:var(--radius); border:1px solid #ffeaa7; margin:15px 0; font-weight:500; text-align:center; }
-        .luggage-list { list-style:none; padding:0; margin:20px 0; }
-        .luggage-list li { margin:10px 0; padding-left:30px; position:relative; font-size:1rem; }
-        .luggage-list li input { position:absolute; left:0; top:4px; transform:scale(1.5); }
-        .luggage-list li label { cursor:pointer; }
         
+        /* 行李清單樣式修正 */
+        .luggage-list { list-style:none; padding:0; margin:0; }
+        .luggage-item { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f0f0f0; }
+        .luggage-item > div { display:flex; align-items:center; }
+        .luggage-item input[type="checkbox"] { transform:scale(1.3); margin-right:12px; }
+        .luggage-item label { font-size:1rem; cursor:pointer; }
+        .btn-del { background:#ffebee; color:#c62828; border:none; padding:5px 10px; border-radius:4px; font-size:0.8rem; cursor:pointer; }
+        .add-luggage-box { display:flex; gap:10px; margin-top:15px; }
+        .add-luggage-box input { flex:1; padding:10px; border:1px solid #ddd; border-radius:8px; }
+
         .btn-google-drive { display:inline-flex; align-items:center; gap:8px; background:#1FA463; color:white; padding:12px 20px; border-radius:50px; text-decoration:none; font-weight:bold; margin-top:15px; box-shadow: 0 4px 10px rgba(31, 164, 99, 0.3); }
 
         @keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
@@ -99,31 +105,44 @@ const itineraryData = [
     {day:"Day 1",date:"12/25 (四)",weather:"晴時多雲 -2°C / 5°C",events:[
         {time:"07:20",title:"建議集合時間",icon:"fa-clock",desc:"<strong class='highlight'>松山機場國際線報到櫃檯集合</strong><br>（起飛前2小時報到，建議提早到達辦理）",nav:""},
         {time:"09:20",title:"航班 CI260 出發",icon:"fa-plane-departure",desc:"TSA 松山 → GMP 金浦 (飛行約2小時25分)<br><a href='https://www.google.com/travel/flights' target='_blank'>Google Flights 即時查詢</a>",nav:""},
-        {time:"13:00",title:"抵達 & 飯店 Check-in",icon:"fa-hotel",desc:"首爾金浦機場 → 明洞中城飯店 / 東大門民宿 (地鐵)<br><a href='https://www.paine0602.com/hotel-midcity/' target='_blank' class='intro-link'>[住宿心得] 明洞中城飯店 2025最新評價</a>",nav:"Hotel Midcity Myeongdong"},
-        {time:"14:00",title:"明洞換錢 & 會合",icon:"fa-money-bill-wave",desc:"麥克4人先到明洞換錢 → 搭地鐵到東大門歷史文化公園站與敬仁4人會合<br><a href='https://vocus.cc/article/6724482bfd89780001867de7' target='_blank' class='intro-link'>[攻略] 2024 明洞換錢所匯率與推薦</a>",nav:"Myeongdong Money Exchange"},
-        {time:"15:00",title:"東大門晚午餐",icon:"fa-utensils",tags:["必吃"],desc:"鬼怪烤肉 (서울 중구 을지로43길 38)<br>滿足五香豬腳 (서울 중구 을지로43길 9-4 1~3층)<br><a href='https://www.paine0602.com/34058517/' target='_blank' class='intro-link'>[食記] 東大門鬼怪烤肉 - 像山一樣高的牛肉</a><br><a href='https://twobunny.tw/manjok-ohyang-jokbal/' target='_blank' class='intro-link'>[食記] 滿足五香豬腳 - 米其林推薦美味</a><br><span class='souvenir'>伴手禮建議：東大門批發市場小物、服飾配件</span>",nav:"서울 중구 을지로43길"},
-        {time:"16:30",title:"江南巡禮",icon:"fa-bag-shopping",tags:["打卡"],desc:"星空圖書館 / COEX MALL (三成站 6號出口)<br>樂天百貨 / 樂天世界塔 (蠶室站 1/2號或10/11號出口)<br><a href='https://www.klook.com/zh-TW/activity/17678-lotte-world-tower-seoul-sky/' target='_blank' class='btn-ticket'>Klook 樂天世界塔觀景台門票</a><br><a href='https://www.klook.com/zh-TW/activity/33305-lotte-world-aquarium-seoul/' target='_blank' class='btn-ticket'>Klook 樂天水族館門票</a><br><a href='https://lizzzstyle.tw/starfieldlibrary/' target='_blank' class='intro-link'>[景點] COEX 星空圖書館 2025 拍照攻略</a><br><a href='https://yiwutrip.tw/seoul-sky/' target='_blank' class='intro-link'>[景點] 樂天世界塔 Seoul Sky 觀景台心得</a><br><span class='souvenir'>伴手禮建議：Olive Young美妝、韓國零食、藥菓</span>",nav:"Starfield Library COEX"},
-        {time:"19:30",title:"晚餐",icon:"fa-fire-burner",tags:["必吃"],desc:"夢村炒辣雞 (서울 송파구 석촌호수로 298)<br>或 外固執雪濃湯 (555 Samseong-ro, Gangnam District)<br><a href='https://creatrip.com/zh-TW/blog/11826' target='_blank' class='intro-link'>[美食] 蠶室必吃 夢村炒辣雞 (Creatrip推薦)</a><br><a href='https://www.bigfang.tw/blog/post/oegojip-seolleongtang-seoul' target='_blank' class='intro-link'>[美食] 外固執雪濃湯 米其林推薦食記</a>",nav:"몽촌닭갈비 석촌호수로"}
+        {time:"13:00",title:"抵達 & 飯店 Check-in",icon:"fa-hotel",desc:"首爾金浦機場 → 明洞中城飯店 / 東大門民宿 (地鐵)<br><a href='https://www.google.com/search?q=Hotel+Midcity+Myeongdong+住宿心得+2024' target='_blank' class='intro-link'>Google 搜尋：明洞中城飯店 最新評價</a>",nav:"Hotel Midcity Myeongdong"},
+        {time:"14:00",title:"明洞換錢 & 會合",icon:"fa-money-bill-wave",desc:"麥克4人先到明洞換錢 → 搭地鐵到東大門歷史文化公園站與敬仁4人會合<br><a href='https://www.google.com/search?q=明洞+換錢所+匯率+2025' target='_blank' class='intro-link'>Google 搜尋：明洞換錢所最新匯率</a>",nav:"Myeongdong Money Exchange"},
+        {time:"15:00",title:"東大門晚午餐",icon:"fa-utensils",tags:["必吃"],desc:"鬼怪烤肉 (서울 중구 을지로43길 38)<br>滿足五香豬腳 (서울 중구 을지로43길 9-4 1~3층)<br><a href='https://www.google.com/search?q=東大門+鬼怪烤肉+食記+2025' target='_blank' class='intro-link'>Google 搜尋：鬼怪烤肉食記</a><br><a href='https://www.google.com/search?q=東大門+滿足五香豬腳+食記+2025' target='_blank' class='intro-link'>Google 搜尋：滿足五香豬腳食記</a><br><span class='souvenir'>伴手禮建議：東大門批發市場小物、服飾配件</span>",nav:"서울 중구 을지로43길"},
+        {time:"16:30",title:"江南巡禮",icon:"fa-bag-shopping",tags:["打卡"],desc:"星空圖書館 / COEX MALL (三成站 6號出口)<br>樂天百貨 / 樂天世界塔 (蠶室站 1/2號或10/11號出口)<br><a href='https://www.klook.com/zh-TW/activity/17678-lotte-world-tower-seoul-sky/' target='_blank' class='btn-ticket'>Klook 樂天世界塔觀景台門票</a><br><a href='https://www.klook.com/zh-TW/activity/33305-lotte-world-aquarium-seoul/' target='_blank' class='btn-ticket'>Klook 樂天水族館門票</a><br><a href='https://www.google.com/search?q=星空圖書館+COEX+攻略+2025' target='_blank' class='intro-link'>Google 搜尋：星空圖書館拍照攻略</a><br><a href='https://www.google.com/search?q=樂天世界塔+Seoul+Sky+心得+2025' target='_blank' class='intro-link'>Google 搜尋：樂天世界塔觀景台心得</a><br><span class='souvenir'>伴手禮建議：Olive Young美妝、韓國零食、藥菓</span>",nav:"Starfield Library COEX"},
+        {time:"19:30",title:"晚餐",icon:"fa-fire-burner",tags:["必吃"],desc:"夢村炒辣雞 (서울 송파구 석촌호수로 298)<br>或 外固執雪濃湯 (555 Samseong-ro, Gangnam District)<br><a href='https://www.google.com/search?q=蠶室+夢村炒辣雞+食記' target='_blank' class='intro-link'>Google 搜尋：夢村炒辣雞食記</a><br><a href='https://www.google.com/search?q=外固執雪濃湯+米其林+食記' target='_blank' class='intro-link'>Google 搜尋：外固執雪濃湯食記</a>",nav:"몽촌닭갈비 석촌호수로"}
     ]},
     {day:"Day 2",date:"12/26 (五)",weather:"多雲 -4°C / 3°C",note:"包車服務 10:00~19:30 (Henry)",events:[
-        {time:"10:00",title:"包車接送 & 早午餐",icon:"fa-van-shuttle",desc:"Henry到東大門民宿接敬仁4人 → 明洞中城飯店接麥克4人 → 望遠市場<br>Uirak天婦羅 (411-21 Mangwon-dong)<br><a href='https://mimihan.tw/mangwon-market/' target='_blank' class='intro-link'>[攻略] 望遠市場必吃美食與Uirak炸辣椒</a><br><span class='souvenir'>伴手禮建議：傳統市場小吃、韓式醬料</span>",nav:"우이락 망원"},
+        {time:"10:00",title:"包車接送 & 早午餐",icon:"fa-van-shuttle",desc:"Henry到東大門民宿接敬仁4人 → 明洞中城飯店接麥克4人 → 望遠市場<br>Uirak天婦羅 (411-21 Mangwon-dong)<br><a href='https://www.google.com/search?q=望遠市場+必吃+攻略+2025' target='_blank' class='intro-link'>Google 搜尋：望遠市場必吃攻略</a><br><span class='souvenir'>伴手禮建議：傳統市場小吃、韓式醬料</span>",nav:"우이락 망원"},
         {time:"14:00",title:"前往醫院",icon:"fa-hospital",desc:"送敬仁2人到 Korea Cancer Center Hospital (75 Nowon-ro, Nowon-gu)",nav:"원자력병원 Nowon"},
-        {time:"14:00",title:"逛街 & ZOOLUNG",icon:"fa-otter",desc:"昌信洞文具玩具批發市場 → 時代廣場 ZOOLUNG (下午茶 Henry推薦)<br><a href='https://www.klook.com/zh-TW/activity/78156-seoul-zoolung-zoolung-indoor-animal-theme-park/' target='_blank' class='btn-ticket'>Klook ZOOLUNG門票</a><br><a href='https://www.kkday.com/zh-tw/product/32291' target='_blank' class='btn-ticket'>KKday ZOOLUNG門票</a><br><a href='https://creatrip.com/zh-TW/blog/4961' target='_blank' class='intro-link'>[逛街] 昌信洞玩具文具批發市場攻略</a><br><a href='https://jumpingsugar.com/blog/post/seoul-01' target='_blank' class='intro-link'>[親子] 永登浦 ZOOLUNG ZOOLUNG 動物園心得</a><br><span class='souvenir'>伴手禮建議：韓國可愛文具、玩具</span>",nav:"Zoolung Zoolung Yeongdeungpo"},
-        {time:"19:30",title:"晚餐：櫸樹雪濃湯",icon:"fa-bowl-food",tags:["暖胃"],desc:"느티나무설렁탕 (서울 중구 퇴계로71길 38)<br><a href='https://joaisen.com/korea-seoul-seolleongtang-tw/' target='_blank' class='intro-link'>[食記] 東大門 70年老店 櫸樹雪濃湯</a>",nav:"느티나무설렁탕 동대문"}
+        {time:"14:00",title:"逛街 & ZOOLUNG",icon:"fa-otter",desc:"昌信洞文具玩具批發市場 → 時代廣場 ZOOLUNG (下午茶 Henry推薦)<br><a href='https://www.klook.com/zh-TW/activity/78156-seoul-zoolung-zoolung-indoor-animal-theme-park/' target='_blank' class='btn-ticket'>Klook ZOOLUNG門票</a><br><a href='https://www.kkday.com/zh-tw/product/32291' target='_blank' class='btn-ticket'>KKday ZOOLUNG門票</a><br><a href='https://www.google.com/search?q=昌信洞+玩具街+攻略+2025' target='_blank' class='intro-link'>Google 搜尋：昌信洞玩具街攻略</a><br><a href='https://www.google.com/search?q=ZOOLUNG+ZOOLUNG+永登浦+心得' target='_blank' class='intro-link'>Google 搜尋：ZOOLUNG 動物園心得</a><br><span class='souvenir'>伴手禮建議：韓國可愛文具、玩具</span>",nav:"Zoolung Zoolung Yeongdeungpo"},
+        {time:"19:30",title:"晚餐：櫸樹雪濃湯",icon:"fa-bowl-food",tags:["暖胃"],desc:"느티나무설렁탕 (서울 중구 퇴계로71길 38)<br><a href='https://www.google.com/search?q=東大門+櫸樹雪濃湯+食記' target='_blank' class='intro-link'>Google 搜尋：櫸樹雪濃湯食記</a>",nav:"느티나무설렁탕 동대문"}
     ]},
     {day:"Day 3",date:"12/27 (六)",weather:"晴天 -3°C / 4°C",note:"包車服務 10:00~19:00 (Henry)",events:[
         {time:"10:00",title:"包車接送",icon:"fa-van-shuttle",desc:"Henry到明洞飯店接麥克4人 → 東大門民宿接敬仁4人",nav:""},
-        {time:"11:00",title:"聖水洞逛街吃點心",icon:"fa-camera",tags:["打卡"],desc:"聖水洞逛街吃點心<br><a href='https://yenliving.com/korea-seoul-seongsu-shops/' target='_blank' class='intro-link'>[逛街] 2025 聖水洞必逛店家地圖整理</a><br><span class='souvenir'>伴手禮建議：香氛、選物店手作商品</span>",nav:"성수동 서울"},
-        {time:"13:00",title:"北村韓屋村 & 益善洞午餐",icon:"fa-mug-hot",tags:["文青","咖啡"],desc:"北村韓屋村 → 益善洞逛街吃午餐<br>土俗村蔘雞湯 (5 Jahamun-ro 5-gil)<br>鐘路老奶奶刀削麵 / 新羅製麵<br><a href='https://www.klook.com/zh-TW/blog/bukchon-hanok-village-guide/' target='_blank' class='intro-link'>[攻略] 北村韓屋村散步路線指南</a><br><a href='https://windiewang.com/2024/02/25/seoul-to-sok-chon/' target='_blank' class='intro-link'>[食記] 土俗村蔘雞湯 2024最新食記</a><br><a href='https://yukigo.tw/shilla-jemyeon-anguk/' target='_blank' class='intro-link'>[食記] 新羅製麵 辣章魚刀切麵 (附中文菜單)</a><br><span class='souvenir'>伴手禮建議：傳統韓菓、手工藝品</span>",nav:"토속촌 삼계탕"},
-        {time:"14:30",title:"東大門 SPAREX 汗蒸幕",icon:"fa-spa",tags:["放鬆"],desc:"東大門Sparex汗蒸房 (247 Jangchungdan-ro)<br>Wendy脫隊去明洞剪頭髮<br>傍晚清溪川看燈飾 (麥克2人脫隊)<br><a href='https://www.klook.com/zh-TW/activity/133675-seoul-dongdaemun-sparex-jjimjilbang-sauna-admission-ticket/' target='_blank' class='btn-ticket'>Klook SPAREX門票</a><br><a href='https://www.kkday.com/zh-tw/product/251827' target='_blank' class='btn-ticket'>KKday SPAREX門票</a><br><a href='https://mimihan.tw/sparex/' target='_blank' class='intro-link'>[體驗] 東大門 SPAREX 汗蒸幕完整介紹</a>",nav:"동대문 스파렉스"},
-        {time:"18:00",title:"晚餐：山清炭火花園",icon:"fa-fire-flame-curved",tags:["必吃","排隊"],desc:"4大+2小 山清炭火花園烤肉乙支路店 (16-3 Eulji-ro 14-gil)<br>或 청기와타워 을지로점 (서울 중구 을지로2가 199-21)<br>吃完逛明洞商圈/夜市後自行回飯店&民宿<br><a href='https://judyer.com/scbbq/' target='_blank' class='intro-link'>[食記] 山清炭火花園 黑豬肉好吃到爆炸(附預約法)</a>",nav:"산청숯불가든 을지로"}
+        {time:"11:00",title:"聖水洞逛街吃點心",icon:"fa-camera",tags:["打卡"],desc:"聖水洞逛街吃點心<br><a href='https://www.google.com/search?q=聖水洞+逛街地圖+2025' target='_blank' class='intro-link'>Google 搜尋：2025 聖水洞逛街地圖</a><br><span class='souvenir'>伴手禮建議：香氛、選物店手作商品</span>",nav:"성수동 서울"},
+        {time:"13:00",title:"北村韓屋村 & 益善洞午餐",icon:"fa-mug-hot",tags:["文青","咖啡"],desc:"北村韓屋村 → 益善洞逛街吃午餐<br>土俗村蔘雞湯 (5 Jahamun-ro 5-gil)<br>鐘路老奶奶刀削麵 / 新羅製麵<br><a href='https://www.google.com/search?q=北村韓屋村+散步路線+2025' target='_blank' class='intro-link'>Google 搜尋：北村韓屋村散步指南</a><br><a href='https://www.google.com/search?q=益善洞+必吃+美食+2025' target='_blank' class='intro-link'>Google 搜尋：益善洞美食地圖</a><br><a href='https://www.google.com/search?q=新羅製麵+益善洞+食記' target='_blank' class='intro-link'>Google 搜尋：新羅製麵食記</a><br><span class='souvenir'>伴手禮建議：傳統韓菓、手工藝品</span>",nav:"토속촌 삼계탕"},
+        {time:"14:30",title:"東大門 SPAREX 汗蒸幕",icon:"fa-spa",tags:["放鬆"],desc:"東大門Sparex汗蒸房 (247 Jangchungdan-ro)<br>Wendy脫隊去明洞剪頭髮<br>傍晚清溪川看燈飾 (麥克2人脫隊)<br><a href='https://www.klook.com/zh-TW/activity/133675-seoul-dongdaemun-sparex-jjimjilbang-sauna-admission-ticket/' target='_blank' class='btn-ticket'>Klook SPAREX門票</a><br><a href='https://www.kkday.com/zh-tw/product/251827' target='_blank' class='btn-ticket'>KKday SPAREX門票</a><br><a href='https://www.google.com/search?q=東大門+SPAREX+汗蒸幕+心得' target='_blank' class='intro-link'>Google 搜尋：SPAREX 汗蒸幕體驗</a>",nav:"동대문 스파렉스"},
+        {time:"18:00",title:"晚餐：山清炭火花園",icon:"fa-fire-flame-curved",tags:["必吃","排隊"],desc:"4大+2小 山清炭火花園烤肉乙支路店 (16-3 Eulji-ro 14-gil)<br>或 청기와타워 을지로점 (서울 중구 을지로2가 199-21)<br>吃完逛明洞商圈/夜市後自行回飯店&民宿<br><a href='https://www.google.com/search?q=山清炭火花園+乙支路+食記' target='_blank' class='intro-link'>Google 搜尋：山清炭火花園(附預約法)</a>",nav:"산청숯불가든 을지로"}
     ]},
     {day:"Day 4",date:"12/28 (日)",weather:"多雲 -2°C / 6°C",events:[
-        {time:"11:00",title:"Check-out & 早餐",icon:"fa-suitcase-rolling",desc:"明洞或南大門市場刀削麵巷早餐<br><a href='https://creatrip.com/zh-TW/blog/5206' target='_blank' class='intro-link'>[美食] 南大門市場刀削麵一條街 探訪攻略</a><br><span class='souvenir'>伴手禮建議：南大門魷魚絲、果乾、傳統零食</span>",nav:"남대문 칼국수 골목"},
+        {time:"11:00",title:"Check-out & 早餐",icon:"fa-suitcase-rolling",desc:"明洞或南大門市場刀削麵巷早餐<br><a href='https://www.google.com/search?q=南大門市場+刀削麵一條街+食記' target='_blank' class='intro-link'>Google 搜尋：南大門刀削麵一條街</a><br><span class='souvenir'>伴手禮建議：南大門魷魚絲、果乾、傳統零食</span>",nav:"남대문 칼국수 골목"},
         {time:"11:45",title:"機場會合",icon:"fa-handshake",desc:"<strong class='highlight'>金浦機場國際線報到櫃檯集合</strong><br>（起飛前2小時報到，建議11:45到達辦理）",nav:"Gimpo International Airport"},
         {time:"13:45",title:"航班 CI261 起飛",icon:"fa-plane-up",desc:"GMP 金浦 → TSA 松山 (預計15:30抵達)<br><a href='https://www.google.com/travel/flights' target='_blank'>Google Flights 即時查詢</a>",nav:""}
     ]}
 ];
+
+// 初始化變數
+let luggageData = JSON.parse(localStorage.getItem('seoul_luggage')) || [
+    {id:1, text:"護照 / 機票 / K-ETA", checked:false},
+    {id:2, text:"厚外套、防風衣、手套、圍巾", checked:false},
+    {id:3, text:"充電器、行動電源、轉接頭", checked:false},
+    {id:4, text:"現金 / 信用卡 / T-money", checked:false},
+    {id:5, text:"常備藥、感冒藥、腸胃藥", checked:false},
+    {id:6, text:"保暖貼、暖寶寶", checked:false},
+    {id:7, text:"汗蒸幕換洗衣物", checked:false},
+    {id:8, text:"相機 / 手機備用電池", checked:false}
+];
+let currentExchangeRate = parseFloat(localStorage.getItem('seoul_rate')) || 0.0242;
 
 function renderItinerary(){
     const c=document.getElementById('content-container'),t=document.getElementById('dayTabs');
@@ -173,19 +192,7 @@ function renderItinerary(){
             </div>
         </div>
 
-        <h2 style="font-size:1.2rem;margin-bottom:15px;margin-top:25px;">航班即時查詢</h2>
-        <div class="info-grid">
-            <div class="info-box">
-                <div class="info-label">去程 CI260（12/25）</div>
-                <a href="https://www.google.com/travel/flights" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">Google Flights 去程</a>
-            </div>
-            <div class="info-box">
-                <div class="info-label">回程 CI261（12/28）</div>
-                <a href="https://www.google.com/travel/flights" target="_blank" class="btn-nav" style="width:100%;justify-content:center;">Google Flights 回程</a>
-            </div>
-        </div>
-
-        <h2 style="font-size:1.2rem;margin:25px 0 15px;">航班與行李</h2>
+        <h2 style="font-size:1.2rem;margin-bottom:15px;margin-top:25px;">航班與行李</h2>
         <div class="info-grid">
             <div class="info-box"><div class="info-label">去程 CI260</div><div class="info-value">12/25 09:20 TSA → 12:45 GMP</div></div>
             <div class="info-box"><div class="info-label">回程 CI261</div><div class="info-value">12/28 13:45 GMP → 15:30 TSA</div></div>
@@ -207,18 +214,13 @@ function renderItinerary(){
                 <a href="https://map.naver.com/v5/search/45-4%20Jangchungdan-ro%208-gil" target="_blank" class="btn-naver">Naver</a></div>
         </div>
 
-        <h2 style="font-size:1.2rem;margin:25px 0 15px;">建議行李清單</h2>
+        <h2 style="font-size:1.2rem;margin:25px 0 15px;">行李清單 (可編輯)</h2>
         <div class="info-box">
-            <ul class="luggage-list" id="luggage-list">
-                <li><input type="checkbox" id="lug1"><label for="lug1">護照 / 機票 / K-ETA</label></li>
-                <li><input type="checkbox" id="lug2"><label for="lug2">厚外套、防風衣、手套、圍巾、毛帽</label></li>
-                <li><input type="checkbox" id="lug3"><label for="lug3">充電器、行動電源、韓國轉接頭（C/F型）</label></li>
-                <li><input type="checkbox" id="lug4"><label for="lug4">現金 / 信用卡 / T-money交通卡</label></li>
-                <li><input type="checkbox" id="lug5"><label for="lug5">常備藥、感冒藥、腸胃藥</label></li>
-                <li><input type="checkbox" id="lug6"><label for="lug6">保暖貼、暖寶寶</label></li>
-                <li><input type="checkbox" id="lug7"><label for="lug7">汗蒸幕換洗衣物</label></li>
-                <li><input type="checkbox" id="lug8"><label for="lug8">相機 / 手機備用電池</label></li>
-            </ul>
+            <ul class="luggage-list" id="luggage-list-container"></ul>
+            <div class="add-luggage-box">
+                <input type="text" id="new-luggage-text" placeholder="輸入新物品...">
+                <button class="btn-primary" style="width:auto;" onclick="addLuggage()">新增</button>
+            </div>
         </div>
 
         <h2 style="font-size:1.2rem;margin:25px 0 15px;">Google Maps 收藏清單</h2>
@@ -226,11 +228,22 @@ function renderItinerary(){
             <a href="https://reurl.cc/5bMNjM" target="_blank" style="text-decoration:none;color:var(--primary);font-weight:bold;display:block;padding:15px;text-align:center;background:#f0f2f5;border-radius:8px;">開啟完整收藏地圖</a>
         </div>
         <div style="height:100px;"></div>`;
-    c.appendChild(info);
+    c.appendChild(info); renderLuggage();
 
     const exp=document.createElement('div');exp.id='view-expense';exp.className='section';
     exp.innerHTML=`<div style="background:white;padding:20px;border-radius:16px;box-shadow:var(--shadow);">
-        <h3 style="margin-top:0;">快速記帳 (KRW → TWD)</h3>
+        <h3 style="margin-top:0;">匯率設定 (KRW → TWD)</h3>
+        <div style="display:flex;gap:10px;margin-bottom:15px;align-items:center;">
+            <input type="number" id="rate-input" class="expense-input" style="margin:0;" value="${currentExchangeRate}" step="0.0001" onchange="updateRate(this.value)">
+            <button class="btn-primary" style="width:120px;padding:12px 5px;font-size:0.9rem;" onclick="fetchRate()">
+                <i class="fa-solid fa-arrows-rotate"></i> 抓取匯率
+            </button>
+        </div>
+        <div style="font-size:0.8rem;color:#999;margin-bottom:20px;">
+            * 可點擊按鈕抓取網路匯率，或手動輸入銀行賣出價。
+        </div>
+
+        <h3 style="margin-top:0;">快速記帳</h3>
         <input type="text" id="exp-desc" class="expense-input" placeholder="項目"><input type="number" id="exp-amount" class="expense-input" placeholder="金額 (韓幣)">
         <button class="btn-primary" onclick="addExpense()">新增支出</button>
         <ul id="expense-list" class="expense-list"></ul>
@@ -250,6 +263,7 @@ function renderItinerary(){
     c.appendChild(exp);loadExpenses();
 }
 
+// 頁籤切換
 function switchTab(i){
     document.querySelectorAll('.tab-btn').forEach((b,x)=>b.classList.toggle('active',x===i));
     document.querySelectorAll('.day-content').forEach((d,x)=>d.style.display=x===i?'block':'none');
@@ -261,9 +275,79 @@ function switchView(v,e){
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
     document.getElementById('view-'+v).classList.add('active');
     document.getElementById('dayTabs').style.display=v==='itinerary'?'flex':'none';
+    if(v==='info') renderLuggage();
 }
 
-const EXCHANGE_RATE=0.0242;
+// ========= 行李清單功能 =========
+function renderLuggage(){
+    const list = document.getElementById('luggage-list-container');
+    if(!list) return;
+    list.innerHTML = '';
+    luggageData.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = 'luggage-item';
+        li.innerHTML = `
+            <div>
+                <input type="checkbox" id="lug-${item.id}" ${item.checked?'checked':''} onchange="toggleLuggage(${index})">
+                <label for="lug-${item.id}">${item.text}</label>
+            </div>
+            <button class="btn-del" onclick="deleteLuggage(${index})">刪除</button>
+        `;
+        list.appendChild(li);
+    });
+}
+function addLuggage(){
+    const input = document.getElementById('new-luggage-text');
+    const val = input.value.trim();
+    if(!val) return;
+    luggageData.push({id: Date.now(), text: val, checked: false});
+    saveLuggage();
+    input.value = '';
+    renderLuggage();
+}
+function deleteLuggage(index){
+    if(confirm('確定要刪除嗎？')){
+        luggageData.splice(index, 1);
+        saveLuggage();
+        renderLuggage();
+    }
+}
+function toggleLuggage(index){
+    luggageData[index].checked = !luggageData[index].checked;
+    saveLuggage();
+}
+function saveLuggage(){
+    localStorage.setItem('seoul_luggage', JSON.stringify(luggageData));
+}
+
+// ========= 匯率與記帳功能 =========
+function updateRate(val){
+    currentExchangeRate = parseFloat(val);
+    localStorage.setItem('seoul_rate', currentExchangeRate);
+    loadExpenses(); // 更新總金額
+}
+
+function fetchRate(){
+    // 使用免費匯率API抓取 KRW -> TWD
+    const btn = document.querySelector('#view-expense button i');
+    if(btn) btn.className = 'fa-solid fa-spinner fa-spin';
+    
+    fetch('https://api.exchangerate-api.com/v4/latest/KRW')
+    .then(response => response.json())
+    .then(data => {
+        const newRate = data.rates.TWD;
+        document.getElementById('rate-input').value = newRate;
+        updateRate(newRate);
+        alert(`匯率已更新：1 韓元 ≈ ${newRate} 台幣`);
+    })
+    .catch(err => {
+        alert('無法抓取即時匯率，請檢查網路或手動輸入。');
+    })
+    .finally(()=>{
+        if(btn) btn.className = 'fa-solid fa-arrows-rotate';
+    });
+}
+
 function addExpense(){
     const d=document.getElementById('exp-desc').value.trim(),a=document.getElementById('exp-amount').value;
     if(!d||!a) return alert('請輸入完整資訊');
@@ -273,6 +357,7 @@ function addExpense(){
     document.getElementById('exp-desc').value=''; document.getElementById('exp-amount').value='';
     loadExpenses();
 }
+
 function loadExpenses(){
     const list=document.getElementById('expense-list'),krw=document.getElementById('total-krw'),twd=document.getElementById('total-twd');
     if(!list) return;
@@ -283,15 +368,17 @@ function loadExpenses(){
         const li=document.createElement('li'); li.className='expense-item';
         li.innerHTML=`<div><div style="font-size:1rem;font-weight:500;">${e.desc}</div><div style="font-size:0.75rem;color:#aaa;">${e.date}</div></div>
                       <div style="text-align:right;"><div style="font-weight:600;">₩${e.amount.toLocaleString()}</div>
-                      <div style="font-size:0.8rem;color:#5b6c7d;">≈ NT$${Math.round(e.amount*EXCHANGE_RATE).toLocaleString()}</div></div>`;
+                      <div style="font-size:0.8rem;color:#5b6c7d;">≈ NT$${Math.round(e.amount*currentExchangeRate).toLocaleString()}</div></div>`;
         list.appendChild(li);
     });
-    krw.innerText=total.toLocaleString(); twd.innerText=Math.round(total*EXCHANGE_RATE).toLocaleString();
+    krw.innerText=total.toLocaleString(); 
+    twd.innerText=Math.round(total*currentExchangeRate).toLocaleString();
 }
+
 function copyExpenses(){
     const data=JSON.parse(localStorage.getItem('seoul_expenses')||'[]');
     let txt="日期\t項目\t金額(KRW)\t約合(TWD)\n";
-    data.forEach(e=>{txt+=`${e.date}\t${e.desc}\t${e.amount}\t${Math.round(e.amount*EXCHANGE_RATE)}\n`;});
+    data.forEach(e=>{txt+=`${e.date}\t${e.desc}\t${e.amount}\t${Math.round(e.amount*currentExchangeRate)}\n`;});
     navigator.clipboard.writeText(txt).then(()=>alert('已複製！直接貼到 Notion'));
 }
 
